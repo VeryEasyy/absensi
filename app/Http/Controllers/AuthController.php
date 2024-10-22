@@ -61,10 +61,10 @@ class AuthController extends Controller
         $pass = Hash::make($request->password);
 
       $validateData = $request->validate([
-            'nuptk' => ['required', 'min:4', 'max:255', 'unique:karyawan'],
+            'nuptk' => ['required', 'min:4', 'max:255', 'unique:karyawans'],
             'nama' => 'required|max:255',
             'jabatan' => 'required|max:255',
-            'no_hp' => 'required|max:15|unique:karyawan',
+            'no_hp' => 'required|max:15|unique:karyawans',
             'password' => 'required|min:5|max:255|confirmed' 
        ]);
 
@@ -78,7 +78,7 @@ class AuthController extends Controller
         'password' => $pass
     ];
 
-    $simpan = DB::table('karyawan')->insert($data);
+    $simpan = DB::table('karyawans')->insert($data);
 
     if($simpan){
         return Redirect::back()->with(['success' => 'Akun Berhasil Dibuat']);

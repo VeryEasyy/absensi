@@ -3,32 +3,38 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable; // Use this instead of Model
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class Karyawan extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;  // Use HasFactory and Notifiable traits
 
-    protected $table = "karyawan";
+    protected $primaryKey = 'nuptk';
+    public $incrementing = false;  // Prevents auto-incrementing since nuptk is a string
+    protected $keyType = 'string';
 
-    public $timestamps = false;
-
-    protected $primaryKey = "nuptk";
- 
     protected $fillable = [
-        'nuptk',
-        'nama',
-        'jabatan',
-        'no_hp',
-        'password',
+        'nuptk', 'nama', 'jabatan', 'no_hp', 'foto', 'password', 'remember_login'
     ];
+
+    // Ensure 'password' is hidden when serialized (optional, but recommended)
     protected $hidden = [
-        'password',
-        'remember_login',
+        'password', 'remember_token',
     ];
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+
+    public function dinas()
+    {
+        return $this->hasMany(Dinas::class, 'nuptk');
+    }
+
+    public function izin()
+    {
+        return $this->hasMany(Izin::class, 'nuptk');
+    }
+
+    public function presensi()
+    {
+        return $this->hasMany(Presensi::class, 'nuptk_absen');
+    }
 }

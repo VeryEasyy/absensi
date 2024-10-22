@@ -16,12 +16,12 @@ class DashboardController extends Controller
         $tahunini = date('Y');
         $nuptk = Auth::guard('karyawan')->user()->nuptk;
         
-        $absensekarang = DB::table('presensi')
+        $absensekarang = DB::table('presensis')
         ->where('nuptk_absen', $nuptk)
         ->where('tgl_presensi', $tglsekarang)
         ->first();
 
-        $rekapizin = DB::table('izin')
+        $rekapizin = DB::table('izins')
         ->selectRaw('COUNT(status) as jmldata')
         ->where('nuptk', $nuptk)
         ->whereRaw('MONTH(tgl_izin)="' . $bulanini . '"')

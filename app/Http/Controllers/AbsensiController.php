@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dinas;
+use App\Models\Izin;
 use App\Models\pengajuandinas;
 use App\Models\pengajuanizin;
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ class AbsensiController extends Controller
     public function masuk(){
         $hariini = date("Y-m-d");
         $nuptk = Auth::guard('karyawan')->user()->nuptk;
-        $cek = DB::table('presensi')->where('tgl_presensi', $hariini)->where('nuptk_absen',$nuptk)->count();
+        $cek = DB::table('presensis')->where('tgl_presensi', $hariini)->where('nuptk_absen',$nuptk)->count();
         return view("absensi.masuk", compact('cek'));
     }
 
@@ -46,7 +48,7 @@ class AbsensiController extends Controller
         $hari = date("N");
         $hari_masuk = $nama_hari[$hari];
        
-        $cek = DB::table('presensi')->where('tgl_presensi', $tgl_absen)->where('nuptk_absen',$nuptk)->count();
+        $cek = DB::table('presensis')->where('tgl_presensi', $tgl_absen)->where('nuptk_absen',$nuptk)->count();
         if($jarak > 50){
             echo "error|Maaf Anda Berada Diluar Jangkauan Lokasi Absen, Jarak Anda " . round($jarak) . " Meter dari Lokasi Absen";
         }else {
@@ -57,7 +59,7 @@ class AbsensiController extends Controller
                 'lokasi_pulang' => $lokasi
 
             ];
-        $update = DB::table('presensi')->where('tgl_presensi', $tgl_absen)->where('nuptk_absen',$nuptk)->update($data_pulang);
+        $update = DB::table('presensis')->where('tgl_presensi', $tgl_absen)->where('nuptk_absen',$nuptk)->update($data_pulang);
         if($update){
             echo "success|Absen Pulang Telah Berhasil|out";
             Storage::put($file2,$image_base64);
@@ -74,7 +76,7 @@ class AbsensiController extends Controller
                 'foto_masuk' => $fileName1,
                 'lokasi_masuk' => $lokasi
             ];
-            $simpan = DB::table('presensi')->insert($data_masuk);
+            $simpan = DB::table('presensis')->insert($data_masuk);
             if($simpan){
                 echo "success|Absen Masuk Telah Berhasil|in";
                 Storage::put($file1,$image_base64);
@@ -106,7 +108,7 @@ class AbsensiController extends Controller
     public function editprofile()
     {
         $nuptk = Auth::guard('karyawan')->user()->nuptk;
-        $guru = DB::table('karyawan')->where('nuptk', $nuptk)->first();
+        $guru = DB::table('karyawans')->where('nuptk', $nuptk)->first();
 
         return view('absensi.editprofile', compact('guru'));
     }
@@ -116,7 +118,7 @@ class AbsensiController extends Controller
         $nama = $request->nama;
         $profesi = $request->profesi;
         $no_hp = $request->no_hp;
-        $guru = DB::table('karyawan')->where('nuptk', $nuptk)->first();
+        $guru = DB::table('karyawans')->where('nuptk', $nuptk)->first();
         if($request->hasFile('foto')){
             $foto = $nuptk . "." . $request->file('foto')->getClientOriginalExtension(); 
         }else {
@@ -129,7 +131,7 @@ class AbsensiController extends Controller
             'foto' => $foto
         ];
 
-        $update = DB::table('karyawan')->where('nuptk',$nuptk)->update($data);
+        $update = DB::table('karyawans')->where('nuptk',$nuptk)->update($data);
         if($update){
             if($request->hasFile('foto')){
                $folderpath = "public/uploads/guru/";
@@ -145,7 +147,7 @@ class AbsensiController extends Controller
     public function editpassword()
     {
         $nuptk = Auth::guard('karyawan')->user()->nuptk;
-        $guru = DB::table('karyawan')->where('nuptk', $nuptk)->first();
+        $guru = DB::table('karyawans')->where('nuptk', $nuptk)->first();
 
         return view('absensi.editpassword', compact('guru'));
     }
@@ -169,7 +171,7 @@ class AbsensiController extends Controller
         
             
 
-        $update = DB::table('karyawan')->where('nuptk',$nuptk)->update($data);
+        $update = DB::table('karyawans')->where('nuptk',$nuptk)->update($data);
         if($update){
             return Redirect::back()->with(['success'=>'Password Berhasil Di Ganti']);
         }else{
@@ -190,7 +192,7 @@ class AbsensiController extends Controller
         $tahun = $request->tahun;
         $nuptk = Auth::guard('karyawan')->user()->nuptk;
 
-        $histori = DB::table('presensi')
+        $histori = DB::table('presensis')
         ->whereRaw('MONTH(tgl_presensi)="' . $bulan . '"')
         ->whereRaw('YEAR(tgl_presensi)="' . $tahun . '"')
         ->where('nuptk_absen', $nuptk)->orderBy('tgl_presensi')
@@ -215,7 +217,7 @@ class AbsensiController extends Controller
         $status = $request->status;
         $ket = $request->ket;
         
-        $cek = DB::table('izin')->where('tgl_izin', $tgl_izin)->where('nuptk',$nuptk)->count();
+        $cek = DB::table('izins')->where('tgl_izin', $tgl_izin)->where('nuptk',$nuptk)->count();
         
         if($cek > 0){
             return redirect('/absensi/formizin')->with(['warning' => 'Anda Sudah Mengirim Data Izin']);
@@ -227,7 +229,7 @@ class AbsensiController extends Controller
                 'keterangan' => $ket
             ];
             
-            $simpan = DB::table('izin')->insert($data);
+            $simpan = DB::table('izins')->insert($data);
     
             if($simpan){
                 return redirect('/absensi/formizin')->with(['success' => 'Data Berhasil Dikirim']);
@@ -241,7 +243,7 @@ class AbsensiController extends Controller
     
     public function dataizin(){
         $nuptk = Auth::guard('karyawan')->user()->nuptk;
-        $dataizin = DB::table('izin')
+        $dataizin = DB::table('izins')
         ->where('nuptk', $nuptk)
         ->where('status_approved', null)
         ->get();
@@ -268,7 +270,7 @@ class AbsensiController extends Controller
         $tahun = $request->tahun;
         $nuptk = Auth::guard('karyawan')->user()->nuptk;
 
-        $historiizin = DB::table('izin')
+        $historiizin = DB::table('izins')
         ->whereRaw('MONTH(tgl_izin)="' . $bulan . '"')
         ->whereRaw('YEAR(tgl_izin)="' . $tahun . '"')
         ->where('nuptk', $nuptk)->orderBy('tgl_izin')
@@ -340,9 +342,9 @@ class AbsensiController extends Controller
 
     public function getmonitoring(Request $request){
         $tgl = $request->tgl;
-        $absensi = DB::table('presensi')
-        ->select('presensi.*','nama')
-        ->join('karyawan','presensi.nuptk_absen','=','karyawan.nuptk')
+        $absensi = DB::table('presensis')
+        ->select('presensis.*','nama')
+        ->join('karyawans','presensis.nuptk_absen','=','karyawans.nuptk')
         ->where('tgl_presensi', $tgl)
         ->get();
 
@@ -353,7 +355,7 @@ class AbsensiController extends Controller
         $namabulan = ["","Januari","Febuari","Maret","April","Mei","Juni",
         "Juli","Agustus","September","Oktober","November","Desember"];
 
-        $guru = DB::table('karyawan')
+        $guru = DB::table('karyawans')
         ->orderBy('nama')
         ->get();
 
@@ -366,11 +368,11 @@ class AbsensiController extends Controller
         $tahun = $request->tahun;
         $namabulan = ["","JANUARI","FEBUARI","MARET","APRIL","MEI","JUNI",
         "JULI","AGUSTUS","SEPTEMBER","OKTOBER","NOVEMBER","DESEMBER"];
-        $guru = DB::table('karyawan')
+        $guru = DB::table('karyawans')
         ->where('nuptk', $nuptk)
         ->first();
 
-        $absensi = DB::table('presensi')
+        $absensi = DB::table('presensis')
         ->where('nuptk_absen', $nuptk)
         ->whereRaw('MONTH(tgl_presensi)="' . $bulan . '"')
         ->whereRaw('YEAR(tgl_presensi)="' . $tahun . '"')
@@ -403,8 +405,8 @@ class AbsensiController extends Controller
         $namabulan = ["","JANUARI","FEBUARI","MARET","APRIL","MEI","JUNI",
         "JULI","AGUSTUS","SEPTEMBER","OKTOBER","NOVEMBER","DESEMBER"];
 
-        $rekap = DB::table('presensi')
-        ->selectRaw('presensi.nuptk_absen, karyawan.nama,
+        $rekap = DB::table('presensis')
+        ->selectRaw('presensis.nuptk_absen, karyawans.nama,
             MAX(IF(DAY(tgl_presensi) = 1, CONCAT(jam_masuk, "-", IFNULL(jam_pulang, "00:00:00")), "")) as tgl_1,
             MAX(IF(DAY(tgl_presensi) = 2, CONCAT(jam_masuk, "-", IFNULL(jam_pulang, "00:00:00")), "")) as tgl_2,
             MAX(IF(DAY(tgl_presensi) = 3, CONCAT(jam_masuk, "-", IFNULL(jam_pulang, "00:00:00")), "")) as tgl_3,
@@ -436,10 +438,10 @@ class AbsensiController extends Controller
             MAX(IF(DAY(tgl_presensi) = 29, CONCAT(jam_masuk, "-", IFNULL(jam_pulang, "00:00:00")), "")) as tgl_29,
             MAX(IF(DAY(tgl_presensi) = 30, CONCAT(jam_masuk, "-", IFNULL(jam_pulang, "00:00:00")), "")) as tgl_30,
             MAX(IF(DAY(tgl_presensi) = 31, CONCAT(jam_masuk, "-", IFNULL(jam_pulang, "00:00:00")), "")) as tgl_31')
-        ->join('karyawan', 'presensi.nuptk_absen', '=', 'karyawan.nuptk')
+        ->join('karyawans', 'presensis.nuptk_absen', '=', 'karyawans.nuptk')
         ->whereMonth('tgl_presensi', '=', $bulan)
         ->whereYear('tgl_presensi', '=', $tahun)
-        ->groupBy('presensi.nuptk_absen', 'karyawan.nama')
+        ->groupBy('presensis.nuptk_absen', 'karyawans.nama')
         ->get();
 
         if(isset($_POST['exportexcel'])){
@@ -456,7 +458,7 @@ class AbsensiController extends Controller
     }
 
     public function datapengajuan(Request $request){
-        $izin = pengajuanizin::query();
+        $izin = Izin::query();
         $izin->select('id','tgl_izin','izin.nuptk','nama','status','status_approved','keterangan');
         $izin->join('karyawan','izin.nuptk','=','karyawan.nuptk');
         if(!empty($request->tgl)){
@@ -491,9 +493,9 @@ class AbsensiController extends Controller
         ]);
 
         $tgl = $request->tgl;
-        $absensi = DB::table('presensi')
-        ->select('presensi.*','nama')
-        ->join('karyawan','presensi.nuptk_absen','=','karyawan.nuptk')
+        $absensi = DB::table('presensis')
+        ->select('presensis.*','nama')
+        ->join('karyawans','presensis.nuptk_absen','=','karyawans.nuptk')
         ->where('tgl_presensi', $tgl)
         ->get();
 
@@ -505,7 +507,7 @@ class AbsensiController extends Controller
     }
 
     public function batalizinsakit($id){
-        $update = DB::table('izin')
+        $update = DB::table('izins')
         ->where('id',$id)->update([
             'status_approved' => 0
         ]);
@@ -517,7 +519,7 @@ class AbsensiController extends Controller
     } 
 
     public function pengajuandinas(Request $request){
-        $dinas = pengajuandinas::query();
+        $dinas = Dinas::query();
         $dinas->select('id','tgl_mulai','tgl_selesai','dinas.nuptk','nama','tipe_dinas','alamat_dinas','waktu_mulai','waktu_selesai','keterangan','status_approved');
         $dinas->join('karyawan','dinas.nuptk','=','karyawan.nuptk');
         if(!empty($request->mulai) && !empty($request->selesai)){
