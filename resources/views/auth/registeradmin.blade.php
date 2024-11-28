@@ -68,7 +68,7 @@
                 </div>
                 @enderror
 
-                <input type="password" name="password_confirmation" placeholder="Masukan ulang password"><br>
+                <input type="password" name="password_confirmation" placeholder="Masukan ulang password">
 
                 <input type="submit" name="daftar" id="daftar" class="button" value="Daftar">
 

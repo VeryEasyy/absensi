@@ -69,18 +69,15 @@
                           </a>
                         </span>
                       </div>
-                      <span class="form-label-description mt-2">
-                        <a href="./forgot-password.html">I forgot password</a>
-                      </span>
                     </label>
                     </div>
                    
                     <div class="form-footer">
                       <button type="submit" class="btn btn-primary w-100 mt-3">Sign in</button>
                     </div>
-                    <div class="text-center text-secondary mt-3">
-                      Daftar Akun ==> <a href="/admin/auth/registeradmin" tabindex="-1">Sign up</a>
-                    </div>
+                    <div class="text-center mt-3">
+                      <span>Don't have an account? <a href="/admin/auth/registeradmin" class="text-primary">Register</a></span>
+                  </div>
                   </form>
                 </div>       
              

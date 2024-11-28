@@ -45,16 +45,16 @@ class DashboardController extends Controller
         $hariini = date("Y-m-d");
     
 
-        $rekapguru = DB::table('karyawan')
+        $rekapguru = DB::table('karyawans')
         ->selectRaw('COUNT(nuptk) as jmlguru')
         ->first();
 
-        $rekapabsensi = DB::table('presensi')
+        $rekapabsensi = DB::table('presensis')
         ->selectRaw('COUNT(nuptk_absen) as jmlhadir, SUM(IF(jam_masuk > "07:00",1,0)) as jmlterlambat')
         ->where('tgl_presensi', $hariini)
         ->first();
 
-        $rekapizin = DB::table('izin')
+        $rekapizin = DB::table('izins')
         ->selectRaw('SUM(IF(status="i",1,0)) as jmlizin, SUM(IF(status="s",1,0)) as jmlsakit')
         ->where('tgl_izin', $hariini)
         ->where('status_approved', NULL)

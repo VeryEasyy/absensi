@@ -12,7 +12,7 @@ class GuruController extends Controller
     public function index(Request $request)
     {
         $query = Karyawan::query();
-        $query->select('karyawan.*');
+        $query->select('karyawans.*');
         $query->orderBy('nama');
 
         if(!empty($request->nama_guru)){
@@ -28,7 +28,7 @@ class GuruController extends Controller
     public function edit(Request $request){
         $nuptk = $request->nuptk;
 
-        $guru = DB::table('karyawan')
+        $guru = DB::table('karyawans')
         ->where('nuptk', $nuptk)
         ->first();
 
@@ -51,7 +51,7 @@ class GuruController extends Controller
                 'jabatan' => $jabatan,
                 'no_hp' => $no_hp
             ];
-            $update = DB::table('karyawan')->where('nuptk',$nuptk)->update($data);
+            $update = DB::table('karyawans')->where('nuptk',$nuptk)->update($data);
 
             if($update) {
                 return Redirect::back()->with(['success' => 'Data Berhasil Diedit']);
@@ -64,7 +64,7 @@ class GuruController extends Controller
     }
 
     public function delete($nuptk, Request $request){
-        $delete = DB::table('karyawan')
+        $delete = DB::table('karyawans')
         ->where('nuptk', $nuptk)
         ->delete();
 

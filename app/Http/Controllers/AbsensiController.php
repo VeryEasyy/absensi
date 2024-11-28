@@ -465,18 +465,18 @@ class AbsensiController extends Controller
 
     public function datapengajuan(Request $request){
         $izin = Izin::query();
-        $izin->select('id','tgl_izin','izin.nuptk','nama','status','status_approved','keterangan');
-        $izin->join('karyawan','izin.nuptk','=','karyawan.nuptk');
+        $izin->select('id','tgl_izin','izins.nuptk','nama','status','status_approved','keterangan');
+        $izin->join('karyawans','izins.nuptk','=','karyawans.nuptk');
         if(!empty($request->tgl)){
             $izin->where('tgl_izin', $request->tgl);
         }
 
         if(!empty($request->nuptk)){
-            $izin->where('izin.nuptk', $request->nuptk);
+            $izin->where('izins.nuptk', $request->nuptk);
         }
 
         if(!empty($request->username)){
-            $izin->where('karyawan.nama', $request->username);
+            $izin->where('karyawans.nama', $request->username);
         }
 
         if ($request->status_approved === '0' || $request->status_approved === '1' || $request->status_approved === '2' ) {
@@ -493,7 +493,7 @@ class AbsensiController extends Controller
     public function approveizinsakit(Request $request){
         $status = $request->status_approved;
         $id_izinsakit_form = $request->id_izinsakit_form;
-        $update = DB::table('izin')
+        $update = DB::table('izins')
         ->where('id',$id_izinsakit_form)->update([
             'status_approved' => $status
         ]);
@@ -527,7 +527,7 @@ class AbsensiController extends Controller
     public function pengajuandinas(Request $request){
         $dinas = Dinas::query();
         $dinas->select('id','tgl_mulai','tgl_selesai','dinas.nuptk','nama','tipe_dinas','alamat_dinas','waktu_mulai','waktu_selesai','keterangan','status_approved');
-        $dinas->join('karyawan','dinas.nuptk','=','karyawan.nuptk');
+        $dinas->join('karyawans','dinas.nuptk','=','karyawans.nuptk');
         if(!empty($request->mulai) && !empty($request->selesai)){
             $dinas->where('tgl_mulai', $request->mulai)
                ->where('tgl_selesai', $request->selesai)
