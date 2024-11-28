@@ -10,12 +10,13 @@ class Karyawan extends Authenticatable
 {
     use HasFactory, Notifiable;  // Use HasFactory and Notifiable traits
 
+    protected $table = 'karyawans';
     protected $primaryKey = 'nuptk';
     public $incrementing = false;  // Prevents auto-incrementing since nuptk is a string
     protected $keyType = 'string';
 
     protected $fillable = [
-        'nuptk', 'nama', 'jabatan', 'no_hp', 'foto', 'password', 'remember_login'
+        'nuptk', 'nama', 'jabatan', 'no_hp', 'foto', 'password', 'remember_login',  'reset_token'
     ];
 
     // Ensure 'password' is hidden when serialized (optional, but recommended)

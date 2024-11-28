@@ -28,12 +28,18 @@ class AbsensiController extends Controller
         $jam = date("H:i:s");
         $lokasi = $request->lokasi;
         $lokasiuser = explode(",", $lokasi);
+
+        //kordinat lokasi
         $latkantor = floatval($lokasiuser[0]);
         $longkantor = floatval($lokasiuser[1]);
         $latuser = floatval($lokasiuser[0]);
         $longuser = floatval($lokasiuser[1]);
-
+        // $latkantor = -6.1824092443393175;  
+        // $longkantor = 106.58873583071211; 
+    
         $jarak = $this->HitungJarak($latkantor, $longkantor, $latuser, $longuser);
+
+        // $jarak = $this->HitungJarak($latkantor, $longkantor, $latuser, $longuser);
         // $radius = round($jarak("meters"));
         $image = $request->image;
         $folderPath = "public/uploads/absensi/";
@@ -144,26 +150,26 @@ class AbsensiController extends Controller
     }
 
     
-    public function editpassword()
-    {
-        $nuptk = Auth::guard('karyawan')->user()->nuptk;
-        $guru = DB::table('karyawans')->where('nuptk', $nuptk)->first();
+    // public function editpassword()
+    // {
+    //     $nuptk = Auth::guard('karyawan')->user()->nuptk;
+    //     $guru = DB::table('karyawans')->where('nuptk', $nuptk)->first();
 
-        return view('absensi.editpassword', compact('guru'));
-    }
+    //     return view('absensi.editpassword', compact('guru'));
+    // }
 
-    public function updatepass(Request $request){
-        $nuptk = Auth::guard('karyawan')->user()->nuptk;
-        $pass1 = $request->password1;
-        $pass2 = $request->password2;
+    // public function updatepass(Request $request){
+    //     $nuptk = Auth::guard('karyawan')->user()->nuptk;
+    //     $pass1 = $request->password1;
+    //     $pass2 = $request->password2;
 
-        if($pass1 !== $pass2){
-            return Redirect::back()->with(['info' => 'Konfirmasi Password Tidak Sesuai']);
-        }
-            $pass1 = Hash::make($request->password1);
-            $data = [
-                    'password' => $pass1,
-                ];
+    //     if($pass1 !== $pass2){
+    //         return Redirect::back()->with(['info' => 'Konfirmasi Password Tidak Sesuai']);
+    //     }
+    //         $pass1 = Hash::make($request->password1);
+    //         $data = [
+    //                 'password' => $pass1,
+    //             ];
              
         
 
@@ -171,13 +177,13 @@ class AbsensiController extends Controller
         
             
 
-        $update = DB::table('karyawans')->where('nuptk',$nuptk)->update($data);
-        if($update){
-            return Redirect::back()->with(['success'=>'Password Berhasil Di Ganti']);
-        }else{
-            return Redirect::back()->with(['error'=>'Password Gagal Diganti']);;
-        }
-    }
+    //     $update = DB::table('karyawans')->where('nuptk',$nuptk)->update($data);
+    //     if($update){
+    //         return Redirect::back()->with(['success'=>'Password Berhasil Di Ganti']);
+    //     }else{
+    //         return Redirect::back()->with(['error'=>'Password Gagal Diganti']);;
+    //     }
+    // }
 
     public function histori() 
     {

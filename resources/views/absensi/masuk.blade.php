@@ -89,33 +89,32 @@
 @endsection
 
 @section('content')
-<div class="row" style="margin-top: 70px">
-    <div class="col">
-        <input type="hidden" name="lokasi" id="lokasi">
-        <div id="mycamera"></div>
-    </div>    
-</div>
-<div class="row">
-    <div class="col">
-        @if ($cek > 0)
-            <button type="button" id="takeabsen" class="btn btn-danger btn-block">
-                <ion-icon name="camera-outline"></ion-icon>
-                Absen Pulang
-            </button>
-        @else
-            <button type="button" id="takeabsen" class="btn btn-primary btn-block">
-                <ion-icon name="camera-outline"></ion-icon>
-                Absen Masuk
-            </button>
-        @endif
-       
+    <<div class="row g-0" style="margin-top: 70px">
+        <div class="col">
+            <input type="hidden" name="lokasi" id="lokasi">
+            <div id="mycamera"></div>
+        </div>    
     </div>
-</div>
-<div class="row mt-2">
-    <div class="col">
-        <div id="map"></div> 
+    <div class="row g-0">
+        <div class="col">
+            @if ($cek > 0)
+                <button type="button" id="takeabsen" class="btn btn-danger btn-block mb-0">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    Absen Pulang
+                </button>
+            @else
+                <button type="button" id="takeabsen" class="btn btn-primary btn-block mb-0">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    Absen Masuk
+                </button>
+            @endif
+        </div>
     </div>
-</div>
+    <div class="row g-0 mt-2">
+        <div class="col">
+            <div id="map"></div> 
+        </div>
+    </div>
 @endsection
 
 @push('myjs')

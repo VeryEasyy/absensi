@@ -28,6 +28,14 @@ Route::middleware(['guest:karyawan'])->group(function () {
      Route::get('/auth/register', [AuthController::class,'register'] );
      Route::post('/auth/register', [AuthController::class,'prosesregister'] );
 
+     //lupaa password
+     Route::get('/editpassword', [AuthController::class, 'editpassword'] );
+     Route::post('/editpassword/{nuptk}/updatepass', [AuthController::class, 'updatepass']);
+     Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.reset');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset.form');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
      
 
 });
@@ -61,9 +69,8 @@ Route::middleware(['auth:karyawan'])->group(function () {
 
     //editprofile
     Route::get('/editprofile', [AbsensiController::class, 'editprofile'] );
-    Route::get('/editpassword', [AbsensiController::class, 'editpassword'] );
     Route::post('/absensi/{nuptk}/updateprofile', [AbsensiController::class, 'updateprofile']);
-    Route::post('/absensi/{nuptk}/updatepass', [AbsensiController::class, 'updatepass']);
+   
 
     //histori
     Route::get('/absensi/histori', [AbsensiController::class, 'histori'] );

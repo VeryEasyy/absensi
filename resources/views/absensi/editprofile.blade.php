@@ -32,8 +32,8 @@
 @endsection
 
 @section('content')
-    <div class="row" style="margin-top: 4rem">
-        <div class="col">
+    <div class="row g-0 mt-5">
+        <div class="col mt-2">
             @php
                 $messagesucces = Session::get('success');
                 $messageerror = Session::get('error');

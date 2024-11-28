@@ -16,18 +16,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/icon/192x192.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="manifest" href="__manifest.json">
-</head>
-
-@section('header')
-    <div class="appHeader bg-primary text-light">
-        <div class="left">
-            <a href="javascript:;" class="headerButton goBack">
-                <ion-icon name="chevron-back-outline"></ion-icon>
-            </a>
-        </div>
-        <div class="pageTitle">Form Izin & Sakit</div>
-        <div class="right"></div>
-    </div>
     <style>
         label{
             margin-left: 5px;
@@ -41,9 +29,22 @@
             cursor: pointer;
         }
     </style>
+</head>
+
+@section('header')
+    <div class="appHeader bg-primary text-light">
+        <div class="left">
+            <a href="javascript:;" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">Form Izin & Sakit</div>
+        <div class="right"></div>
+    </div>
+  
 @endsection
 @section('content')
-    <div class="row" style="margin-top: 4rem">
+    <div class="row g-0" style="margin-top: 4rem">
         <div class="col">
             <form action="" method="POST" id="formizin" style="margin-top: 3rem">
                 @csrf
@@ -82,7 +83,7 @@
             </form>
         </div>
     </div>
-    <div class="row">
+    <div class="row g-0">
         <div class="col" style="color: black">
             @php
                 $messagesucces = Session::get('success');
@@ -121,30 +122,6 @@
             @endif
         </div>
     </div>
-    {{-- <div class="row" style="margin-top: 4rem">
-        <div class="col">
-            @php
-                $messagesucces = Session::get('success');
-                $messageerror = Session::get('error');
-                $messageinfo = Session::get('info');
-            @endphp
-            @if (session('info'))
-            <div class="alert alert-info">
-                {{ $messageinfo}}
-            </div>
-            @endif
-            @if (Session::get('success'))
-             <div class="alert alert-success">
-                 {{ $messagesucces }}
-             </div>
-            @endif
-            @if (Session::get('error'))
-                <div class="alert alert-error">
-                    {{ $messageerror }}
-                </div>
-            @endif
-        </div>
-    </div> --}}
 @endsection
 
 @push('myjs')

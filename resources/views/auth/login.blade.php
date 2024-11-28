@@ -27,25 +27,7 @@
 
 
     <!-- App Capsule -->
-    <div id="appCapsule" class="pt-0"  style="background-color: azure">
-
-        {{-- <div class="login-form mt-1">
-            <div class="section">
-                <img src="{{ asset('assets/img/logo sd.jpg') }}" alt="image" class="form-image">
-            </div>
-            <div class="section mt-1">
-                <h1>Menu Login</h1>
-                <h4>Silahkan Login</h4>
-            </div>
-            <div class="section mt-1 mb-5">
-                @php
-                    $messageWarning = Session::get('warning');
-                @endphp
-                @if (Session::get('warning'))
-                    <div class="alert alert-outline-warning">
-                        {{ $messageWarning }}
-                    </div>                        
-                @endif --}}
+    <div id="appCapsule" class="pt-0">
                 <div class="body">
                     <div class="card-body">
                         <form action="/proseslogin" method="POST"  style="margin-top: 90px ">
@@ -59,45 +41,53 @@
                                 </div>
                                 <div class="section mt-1 mb-5">
                                     @php
-                                        $messageWarning = Session::get('warning');
+                                        $messageWarning = Session::get('danger');
                                     @endphp
-                                    @if (Session::get('warning'))
-                                        <div class="alert alert-outline-warning">
+                                    @if (Session::get('danger'))
+                                        <div class="alert alert-outline-danger">
                                             {{ $messageWarning }}
                                         </div>                        
                                     @endif
                             <div class="form-group boxed">
                                 <div class="input-wrapper">
-                                    <input type="text" name="nuptk" class="form-control" id="nuptk" placeholder="NUPTK">
+                                    <input type="text" name="nuptk" class="form-control @error('nuptk') is-invalid @enderror" id="nuptk" placeholder="NUPTK">
                                     <i class="clear-input">
                                         <ion-icon name="close-circle"></ion-icon>
                                     </i>
                                 </div>
+                                @error('nuptk')
+                                <div class="invalid-feedback text-warning">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
         
                             <div class="form-group boxed">
                                 <div class="input-wrapper">
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                    <input type="password" class="form-control  @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password">
                                     <i class="clear-input">
                                         <ion-icon name="close-circle"></ion-icon>
                                     </i>
                                 </div>
-                            </div>
-        
-                            <div class="form-links mt-2" >
-                                <div >
-                                    <a href="/auth/register">Register Now</a>
+                                @error('password')
+                                <div class="invalid-feedback text-warning">
+                                    {{ $message }}
                                 </div>
-                                {{-- <div><a href="page-forgot-password.html" class="text-muted">Forgot Password?</a></div> --}}
+                                @enderror
                             </div>
         
-                            {{-- <div class="form-links mt-2">
-                                <div><a href="page-forgot-password.html" class="text-muted">Forgot Password?</a></div>
-                            </div> --}}
-        
+                            <div class="form-links mt-2  d-flex justify-content-end">
+                                <a href="{{ route('password.request') }}">Forgot Password?</a>
+                            </div>
+
                             <div class="form-button mt-3">
                                 <button type="submit" class="btn btn-success btn-block btn-lg">Log in</button>
                             </div>
+
+                            <div class="text-center mt-3">
+                                <span>Don't have an account? <a href="/auth/register" class="text-primary">Register</a></span>
+                            </div>
+                        </div>
         
                         </form>
                     </div>

@@ -11,16 +11,28 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+
 
 class AuthController extends Controller
 {
     public function proseslogin(Request $request){
+
+        $request->validate([
+            'nuptk' => 'required|string',
+            'password' => 'required|string',
+        ], [
+            'nuptk.required' => 'NUPTK tidak boleh kosong.',
+            'password.required' => 'Password tidak boleh kosong.',
+        ]);
+
         if (Auth::guard("karyawan")->attempt(['nuptk' => $request->nuptk, 'password' => $request->password])) {
             return redirect('/dashboard');
         }else {
-            return redirect('/')->with(['warning'=>'NUPTK / Password Salah']);
+            return redirect('/')->with(['danger'=>'NUPTK / Password Salah']);
             
         }
+
     }
 
     public function logout(){
@@ -124,6 +136,100 @@ class AuthController extends Controller
     }
 
     }
+
+    // public function editpassword()
+    // {
+    //     // $nuptk = Auth::guard('karyawan')->user()->nuptk;
+    //     // $guru = DB::table('karyawans')->where('nuptk', $nuptk)->first();
+    //     // if (!$guru) {
+    //     //     return redirect()->route('home')->with('error', 'NUPTK tidak ditemukan.');
+    //     // }
+    
+
+    //     return view('absensi.editpassword');
+    // }
+
+    // public function updatepass(Request $request){
+    //     $nuptk = Auth::guard('karyawan')->user()->nuptk;
+    //     $pass1 = $request->password1;
+    //     $pass2 = $request->password2;
+
+    //     if($pass1 !== $pass2){
+    //         return Redirect::back()->with(['info' => 'Konfirmasi Password Tidak Sesuai']);
+    //     }
+    //         $pass1 = Hash::make($request->password1);
+    //         $data = [
+    //                 'password' => $pass1,
+    //             ];
+
+    //     $update = DB::table('karyawans')->where('nuptk',$nuptk)->update($data);
+    //     if($update){
+    //         return Redirect::back()->with(['success'=>'Password Berhasil Di Ganti']);
+    //     }else{
+    //         return Redirect::back()->with(['error'=>'Password Gagal Diganti']);;
+    //     }
+    // }
+
+
+    public function showForgotPasswordForm()
+    {
+        return view('auth.forgotpassword');
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate([
+            'nuptk' => 'required|exists:karyawans,nuptk', // Pastikan nama tabel dan kolom sesuai
+        ], [
+            'nuptk.exists' => 'NUPTK tidak ditemukan.',
+        ]);
+    
+        $user = Karyawan::where('nuptk', $request->nuptk)->first();
+    
+        // Simpan token reset password
+        $token = Str::random(60);
+        $user->update([
+            'reset_token' => $token,
+        ]);
+    
+        return redirect()->route('password.reset.form', $token)
+            ->with('warning', 'Silakan atur ulang password Anda.');
+    }
+
+    // Menampilkan form reset password
+    public function showResetForm($token)
+    {
+        return view('auth.resetpassword', compact('token'));
+    }
+
+    // Proses reset password
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|confirmed|min:6',
+            'token' => 'required|exists:karyawans,reset_token',
+        ]);
+
+        $user = Karyawan::where('reset_token', $request->token)->first();
+
+        if (!$user) {
+            return redirect()->back()->withErrors(['token' => 'Token reset tidak valid.']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+            'reset_token' => null, // Hapus token setelah reset password
+        ]);
+
+        
+        if($user){
+            return Redirect::back()->with(['success' => 'Password Berhasil Di Ganti']);
+        }else{
+            return Redirect::back()->with(['error' => 'Password Gagal Di Ganti']);
+          
+        }
+    }
+
 
 
 }

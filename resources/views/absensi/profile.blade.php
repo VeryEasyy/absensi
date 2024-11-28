@@ -32,42 +32,22 @@
 @endsection
 
 @section('content')
-<style>
-    .wrapper1{
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: 2rem;
-        color: white;
-        
-    }
-    .wrapper {
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: 1rem;
-        color: white;
-    }
-    .item{
-        color: white;
-    }
-    
-  
-</style>
-    <div class="form-group boxed" style="background-color: rgb(0, 110, 255)">
+    {{-- <div class="form-group boxed" >
         <div id="user-detail">
-            <div class="avatar" style="margin-top: 5rem">
-                @if (!empty(Auth::guard('karyawan')->user()->foto))
-                    @php
-                        $path = Storage::url('uploads/guru/'.Auth::guard('karyawan')->user()->foto);
-                    @endphp
-                     <img src="{{ url($path) }}" alt="avatar" class="imaged w64 rounded" style="height: 60px">
-                @else
-                    <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
-                @endif
-            </div>
-            <div id="user-info" style="margin-top: 4rem">
-               <b><h2 id="user-name" style="color:white">{{ Auth::guard('karyawan')->user()->nama }}</h2>
-                <span id="user-role" style="color:white">{{ Auth::guard('karyawan')->user()->jabatan }}</span></b>
-            </div>
+                <div class="avatar" style="margin-top: 5rem">
+                    @if (!empty(Auth::guard('karyawan')->user()->foto))
+                        @php
+                            $path = Storage::url('uploads/guru/'.Auth::guard('karyawan')->user()->foto);
+                        @endphp
+                        <img src="{{ url($path) }}" alt="avatar" class="imaged w64 rounded" style="height: 60px">
+                    @else
+                        <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+                    @endif
+                </div>
+                <div id="user-info" style="margin-top: 4rem">
+                <b><h2 id="user-name" style="color:black">{{ Auth::guard('karyawan')->user()->nama }}</h2>
+                    <span id="user-role" style="color:black">{{ Auth::guard('karyawan')->user()->jabatan }}</span></b>
+                </div>
         </div>
         <div class="wrapper1">
             <a href="/editprofile" class="item">
@@ -76,13 +56,87 @@
                     <strong >Edit Profile</strong>
             </a>
         </div>
-        <div class="wrapper">
-            <a href="/editpassword" class="item">
-                    <ion-icon  name="key-outline" role="img" class="md hydrated"
-                        aria-label="key text outline"></ion-icon>
-                    <strong >Ganti Password</strong>
-            </a>
         </div>
+</div> --}}
+
+<div class="container">
+    <div class="main-body">
+          <div class="row gutters-sm mt-4">
+            <div class="col-md-4 mb-3 mt-5">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                    @if (!empty(Auth::guard('karyawan')->user()->foto))
+                        @php
+                            $path = Storage::url('uploads/guru/'.Auth::guard('karyawan')->user()->foto);
+                        @endphp
+                        <img src="{{ url($path) }}" alt="admin" class="rounded-circle" width="150">
+                    @else
+                        <img src="assets/img/sample/avatar/avatar1.jpg" alt="admin" class="rounded-circle" width="150">
+                    @endif
+                    <div class="mt-3">
+                      <h4>{{ Auth::guard('karyawan')->user()->nama }}</h4>
+                      <h5>{{ Auth::guard('karyawan')->user()->nuptk }}</h5>
+                      <p class="text-secondary mb-1">{{ Auth::guard('karyawan')->user()->jabatan }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8 mt-5">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row g-2">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Full Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ Auth::guard('karyawan')->user()->nama }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row g-2">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">NUPTK</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ Auth::guard('karyawan')->user()->nuptk }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row g-2">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Phone</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ Auth::guard('karyawan')->user()->no_hp }}
+                    </div>
+                  </div>
+                  <hr>
+                  <hr>
+                  <div class="row g-2">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Jabatan</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ Auth::guard('karyawan')->user()->jabatan }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row g-2 mb-2">
+                    <div class="col-sm-12">
+                        <a class="btn btn-primary d-flex align-items-center justify-content-center gap-2" href="/editprofile">
+                            <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people text outline"></ion-icon>
+                            <span>Edit Profile</span>
+                        </a>
+                    </div>
+                </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
-</div>
+    </div>
 @endsection

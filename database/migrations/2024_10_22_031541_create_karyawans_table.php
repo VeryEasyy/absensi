@@ -20,18 +20,23 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('foto')->nullable();
             $table->string('password');
+            $table->string('reset_token')->nullable();
             $table->timestamps();
     
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *
      * @return void
      */
+  
+
     public function down()
     {
-        Schema::dropIfExists('karyawans');
+        Schema::table('karyawans', function (Blueprint $table) {
+            $table->string('reset_token')->nullable(false)->change();
+        });
     }
 };

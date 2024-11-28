@@ -16,6 +16,20 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/icon/192x192.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="manifest" href="__manifest.json">
+    <style>
+
+        .item{
+            color: black;
+            display: flex;
+            align-items: center;
+            text-decoration: none; 
+        }
+    
+        .item ion-icon {
+            margin-right: 8px;
+        }
+      
+    </style>
 </head>
 
 @section('header')
@@ -31,32 +45,10 @@
 @endsection
 
 @section('content')
-<style>
-    .wrapper {
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: 1rem;
-        font-size: 20px;
-        color: white;
-        background-color: lightblue;
-    }
-    .item{
-        color: black;
-        display: flex;
-        align-items: center;
-        text-decoration: none; 
-        size: 10px;
-    }
-
-    .item ion-icon {
-        margin-right: 8px;
-    }
-  
-</style>
 <div class="row" style="margin-top: 2rem">
     <div class="col">
-        <div class="form-group boxed">
-            <div class="wrapper" style="margin-top: 4rem">
+        <div class="form-group boxed" style="font-size: 18px;">
+            <div class="wrapper mt-5">
                 <a href="/absensi/formdinas" class="item">
                         <ion-icon name="briefcase-outline" role="img" class="md hydrated" 
                             aria-label="people text outline">
@@ -64,15 +56,14 @@
                         <strong >Dinas Luar</strong>
                 </a>
             </div>
-            <div class="wrapper">
-    
+            <div class="wrapper mt-2">
                 <a href="/absensi/formizin" class="item">
                         <ion-icon  name="document-text-outline" role="img" class="md hydrated"
                             aria-label="key text outline"></ion-icon>
                         <strong >Form Izin & Sakit</strong>
                 </a>
             </div>
-            <div class="wrapper">
+            <div class="wrapper mt-2">
                 <a href="/absensi/historyizin" class="item">
                         <ion-icon name="file-tray-full-outline" role="img" class="md hydrated"
                             aria-label="key text outline"></ion-icon>
@@ -83,9 +74,3 @@
     </div>
 </div>
 @endsection
-
-    {{-- <div class="fab-button bottom-right" style="margin-bottom: 65px">
-        <a href="/absensi/formizin" class="fab">
-            <ion-icon name="add-circle-outline"></ion-icon>
-        </a>
-    </div> --}}
